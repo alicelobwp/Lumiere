@@ -75,17 +75,17 @@ public class AppointmentService {
 
         return appointments.stream()
                 .map(entity -> new AppointmentResponseDTO(
-                entity.getAppointment_id(),
-                entity.getDate(),
-                entity.getTime(),
-                entity.getDescription(),
-                patientId
-        ))
+                        entity.getAppointment_id(),
+                        entity.getDate(),
+                        entity.getTime(),
+                        entity.getDescription(),
+                        patientId
+                ))
                 .toList();
     }
 
     // get appointments per patient by month
-    public List<AppointmentResponseDTO> getAppointmentsForPatientMonth(UUID patientId,int month, int year) {
+    public List<AppointmentResponseDTO> getAppointmentsForPatientMonth(UUID patientId, int month, int year) {
 
         if (!patientRepository.existsById(patientId)) {
             throw new RuntimeException("Paciente não encontrado");
@@ -125,12 +125,12 @@ public class AppointmentService {
         return appointments.stream()
                 .filter(a -> a.getDate().getMonthValue() == month && a.getDate().getYear() == year)
                 .map(entity -> new AppointmentResponseDTO(
-                entity.getAppointment_id(),
-                entity.getDate(),
-                entity.getTime(),
-                entity.getDescription(),
-                entity.getPatient().getPatient_ID()
-        )).toList();
+                        entity.getAppointment_id(),
+                        entity.getDate(),
+                        entity.getTime(),
+                        entity.getDescription(),
+                        entity.getPatient().getPatient_ID()
+                )).toList();
     }
 
     public List<AppointmentResponseDTO> getAppointmentsByYear(int year) {
@@ -139,12 +139,12 @@ public class AppointmentService {
         return appointments.stream()
                 .filter(a -> a.getDate().getYear() == year)
                 .map(entity -> new AppointmentResponseDTO(
-                entity.getAppointment_id(),
-                entity.getDate(),
-                entity.getTime(),
-                entity.getDescription(),
-                entity.getPatient().getPatient_ID()
-        )).toList();
+                        entity.getAppointment_id(),
+                        entity.getDate(),
+                        entity.getTime(),
+                        entity.getDescription(),
+                        entity.getPatient().getPatient_ID()
+                )).toList();
     }
 
     // Get all appointments

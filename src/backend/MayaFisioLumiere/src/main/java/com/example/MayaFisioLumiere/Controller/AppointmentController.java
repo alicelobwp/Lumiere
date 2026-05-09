@@ -47,13 +47,14 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor");
         }
     }
-// busca agendamento do mês do paciente
+
+    // busca agendamento do mês do paciente
     @GetMapping("/patient/month/{patient_id}")
-    public ResponseEntity<?>  getAppoinmentsforPatientByMonth(@PathVariable("patient_id") UUID patientId, int month, int year) {
-        try{
+    public ResponseEntity<?> getAppoinmentsforPatientByMonth(@PathVariable("patient_id") UUID patientId, int month, int year) {
+        try {
             List<AppointmentResponseDTO> appointments = appointmentService.getAppointmentsForPatientMonth(patientId, month, year);
             return ResponseEntity.ok(appointments);
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
