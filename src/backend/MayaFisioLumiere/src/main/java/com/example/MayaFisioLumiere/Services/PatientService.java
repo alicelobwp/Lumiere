@@ -28,21 +28,23 @@ public class PatientService {
 
         return patients.stream()
                 .map(patient -> new PatientResponseDTO(
-                patient.getPatient_ID(),
-                patient.getPassword(),
-                patient.getStatus(),
-                patient.getName(),
-                patient.getSurname(),
-                patient.getEmail(),
-                patient.getBirthDate(),
-                patient.getCellPhone(),
-                patient.getGender(),
-                patient.getHeight(),
-                patient.getWeight(),
-                patient.isLgpdCheck(),
-                patient.getDescription(),
-                patient.getCpf()
-        ))
+                        patient.getPatient_ID(),
+                        patient.getPassword(),
+                        patient.getStatus(),
+                        patient.getName(),
+                        patient.getSurname(),
+                        patient.getEmail(),
+                        patient.getBirthDate(),
+                        patient.getCellPhone(),
+                        patient.getGender(),
+                        patient.getHeight(),
+                        patient.getWeight(),
+                        patient.isLgpdCheck(),
+                        patient.getDescription(),
+                        patient.getCpf(),
+                        patient.getPatientAge()
+
+                ))
                 .toList();
     }
 
@@ -65,7 +67,9 @@ public class PatientService {
                 patient.getWeight(),
                 patient.isLgpdCheck(),
                 patient.getDescription(),
-                patient.getCpf()
+                patient.getCpf(),
+                patient.getPatientAge()
+
         );
     }
 
@@ -87,7 +91,8 @@ public class PatientService {
                 patient.getWeight(),
                 patient.isLgpdCheck(),
                 patient.getDescription(),
-                patient.getCpf()
+                patient.getCpf(),
+                patient.getPatientAge()
         )).toList();
     }
 
@@ -192,7 +197,8 @@ public class PatientService {
                 patient.getWeight(),
                 patient.isLgpdCheck(),
                 patient.getDescription(),
-                patient.getCpf()
+                patient.getCpf(),
+                patient.getPatientAge()
         );
     }
 
