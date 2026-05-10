@@ -16,7 +16,8 @@ public record PatientResponseDTO(
         Double weight,
         boolean lgpdCheck,
         String description,
-        String cpf
+        String cpf,
+        Integer patientAge
         ) {
 
 }
