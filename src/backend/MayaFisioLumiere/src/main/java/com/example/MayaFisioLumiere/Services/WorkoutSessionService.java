@@ -9,7 +9,9 @@ import com.example.MayaFisioLumiere.Entity.WorkoutSessionEntity;
 import com.example.MayaFisioLumiere.Repository.PatientRepository;
 import com.example.MayaFisioLumiere.Repository.WorkoutSessionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -49,17 +51,38 @@ public class WorkoutSessionService {
     }
 
     // Permitir ao paciente dar check no Workout do dia (checked = true)
+    @Transactional
     public WorkoutSessionEntity checkWorkout(Long workoutSession_id) {
         WorkoutSessionEntity workout = workoutSessionRepository.findById(workoutSession_id)
                 .orElseThrow(() -> new RuntimeException("Workout não encontrado"));
 
         workout.setChecked(true);
-        if (workout.getChecked() == true) {
-            workout.setWorkoutDate(LocalDate.now());
-        }
-
+        workout.setWorkoutDate(LocalDate.now());
+        WorkoutSessionEntity savedWorkout = workoutSessionRepository.save(workout);
         checkPatientStatus(workout.getPatient().getPatient_ID());
-        return workoutSessionRepository.save(workout);
+
+            return savedWorkout;
+    }
+
+    //Resetar o check após 6 dias para o paciente treinar a próxima semana
+    @Scheduled(fixedRate = 900000)
+    @Transactional
+    public void resetOldWorkouts() {
+        LocalDate limitDate = LocalDate.now().plusDays(1); //minusDays(6);
+
+        List<WorkoutSessionEntity> oldWorkouts = workoutSessionRepository
+                .findByCheckedTrueAndWorkoutDateBefore(limitDate);
+
+        for (WorkoutSessionEntity workout : oldWorkouts) {
+            workout.setChecked(false);
+            workout.setWorkoutDate(null); // Limpa a data para o próximo check
+
+            //Para resetar a dor do exercício
+            if (workout.getExerciseSessions() != null) {
+                workout.getExerciseSessions().forEach(session -> session.setFeelPain(false));
+            }
+        }
+        workoutSessionRepository.saveAll(oldWorkouts);
     }
 
     // Verificar progresso desta semana
